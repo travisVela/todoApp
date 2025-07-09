@@ -11,7 +11,6 @@ from models import Users
 from fastapi.security import OAuth2PasswordRequestForm, OAuth2PasswordBearer
 from jose import jwt, JWTError
 from dotenv import load_dotenv
-import os
 
 router = APIRouter(
     prefix="/auth",
@@ -48,20 +47,20 @@ def authenticate_uer(username: str, password: str, db):
     return user
 
 def create_access_token(username: str, id: int, expires_delta: timedelta):
-    expires = datetime.now(timezone.utc)
+    expires = datetime.now(timezone.utc) + expires_delta
     encode = {"sub": username, "id": id, "exp": expires}
     return jwt.encode(encode, getenv("SECRET_KEY"), algorithm=getenv("ALGORITHM"))
 
 async def get_current_user(token: Annotated[str, Depends(oauth2_bearer)]):
     try:
-        payload = jwt.decode(token, getenv("SECRET_KEY"), algorithms=getenv("ALGORITHM"))
+        payload = jwt.decode(token, getenv("SECRET_KEY"), algorithms=[getenv("ALGORITHM")])
         username: str = payload.get("sub")
         user_id: int = payload.get("id")
         if not username or not user_id:
             raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Could not validate user")
         return {"username": username, "id": user_id}
     except JWTError:
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Could not validate user")
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail=f"Could not validate user!!!")
 
 '''
 CLASSES
