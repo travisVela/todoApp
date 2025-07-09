@@ -26,6 +26,10 @@ class Todos(Base):
     complete = Column(Boolean, default=False)
     owner_id = Column(Integer, ForeignKey("users.id"))
 
+class UserRequest(BaseModel):
+    firstname: str = Field(min_length=3)
+    lastname: str = Field(min_length=3)
+    role: str
 
 class TodosRequest(BaseModel):
     title: str = Field(min_length=3)
