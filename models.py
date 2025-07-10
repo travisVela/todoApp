@@ -16,6 +16,12 @@ class Users(Base):
     is_active = Column(Boolean, default=True)
     role = Column(String)
 
+class UserRequest(BaseModel):
+    firstname: str = Field(min_length=3)
+    lastname: str = Field(min_length=3)
+
+    role: str
+
 class Todos(Base):
     __tablename__ = "todos"
 
@@ -26,10 +32,6 @@ class Todos(Base):
     complete = Column(Boolean, default=False)
     owner_id = Column(Integer, ForeignKey("users.id"))
 
-class UserRequest(BaseModel):
-    firstname: str = Field(min_length=3)
-    lastname: str = Field(min_length=3)
-    role: str
 
 class TodosRequest(BaseModel):
     title: str = Field(min_length=3)
