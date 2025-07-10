@@ -17,13 +17,15 @@ router = APIRouter(
     tags=['auth']
 )
 
+load_dotenv()
+
 '''
 DEPENDENCIES
 '''
 bcrypt_context = CryptContext(schemes=['bcrypt'], deprecated='auto')
 oauth2_bearer = OAuth2PasswordBearer(tokenUrl="auth/token")
 
-load_dotenv()
+
 
 def get_db():
     db = SessionLocal()
