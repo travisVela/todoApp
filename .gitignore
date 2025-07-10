@@ -10,8 +10,6 @@ __pycache__/
 .idea/*
 *.iml
 
-# alembic
-alembic.ini
 
 # C extensions
 *.so
